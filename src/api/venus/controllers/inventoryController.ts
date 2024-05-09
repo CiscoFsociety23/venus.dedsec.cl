@@ -14,6 +14,17 @@ inventoryController.get('/products', async (req: Request, res: Response) => {
     }
 });
 
+inventoryController.post('/products', async (req: Request, res: Response) => {
+    try {
+        const dataProduct = req.body;
+        const createProduct = await inventoryService.createProduct(dataProduct);
+        res.json(createProduct);
+    } catch (error) {
+        console.log(`[error]: ${error}`);
+        res.json({ status: false });
+    }
+});
+
 inventoryController.get('/categories', async (req: Request, res: Response) => {
     try {
         const category = await inventoryService.getAllCategories();
