@@ -18,7 +18,11 @@ inventoryController.post('/products', async (req: Request, res: Response) => {
     try {
         const dataProduct = req.body;
         const createProduct = await inventoryService.createProduct(dataProduct);
-        res.json(createProduct);
+        if(createProduct.id){
+            res.json({ status: true, producto: createProduct });
+        } else {
+            res.json({ status: false });
+        }
     } catch (error) {
         console.log(`[error]: ${error}`);
         res.json({ status: false });

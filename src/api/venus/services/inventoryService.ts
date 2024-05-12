@@ -31,6 +31,7 @@ class InventoryService {
     };
 
     public async createProduct(dataProduct: Product){
+        console.log(`[info]: Creacion del producto ${dataProduct.nombre}`);
         const [ getCategoryID ] = await this.prisma.categoria.findMany({ select: { id: true }, where: { nombre: dataProduct.categoria.nombre } });
         const createProduct = await this.prisma.producto.create({
             data: {
@@ -41,6 +42,7 @@ class InventoryService {
                 stock: dataProduct.stock
             }
         });
+        console.log(`[info]: Producto ${dataProduct.nombre} creado con el SKU ${createProduct.id}`);
         return createProduct;
     };
 
