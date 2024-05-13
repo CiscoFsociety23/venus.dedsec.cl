@@ -39,6 +39,13 @@ class ProductService {
         return createProduct;
     };
 
+    public async deleteProduct(idProduct: number){
+        console.log(`[info]: Se elimina el producto con id ${idProduct}`);
+        const deleteP = await this.prisma.producto.delete({ where: { id: idProduct } });
+        console.log(deleteP);
+        return deleteP;
+    }
+
 };
 
 export { ProductService }

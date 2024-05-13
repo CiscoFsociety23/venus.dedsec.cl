@@ -33,6 +33,17 @@ inventoryController.post('/products', async (req: Request, res: Response) => {
     }
 });
 
+inventoryController.delete('/products', async (req: Request, res: Response) => {
+    try {
+        const { productID } = req.query;
+        const deleteProduct = await productService.deleteProduct(Number(productID));
+        res.json({ status: true, res: 'Producto eliminado', deleteProduct });
+    } catch (error) {
+        console.log(`[error]: ${error}`);
+        res.json({ status: false });
+    }
+});
+
 inventoryController.get('/categories', async (req: Request, res: Response) => {
     try {
         const category = await categorieService.getAllCategories();
