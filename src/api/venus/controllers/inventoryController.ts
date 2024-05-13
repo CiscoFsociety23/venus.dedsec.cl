@@ -1,12 +1,16 @@
 import express, { Router, Request, Response } from 'express';
-import { InventoryService } from '../services/inventoryService';
+import { ProductService } from '../services/productService';
+import { CategoriaService } from '../services/categoriaService';
+import { ProveedorService } from '../services/proveedorService';
 
 const inventoryController: Router = express.Router();
-const inventoryService: InventoryService = new InventoryService();
+const productService: ProductService = new ProductService();
+const categorieService: CategoriaService = new CategoriaService();
+const proveedorService: ProveedorService = new ProveedorService();
 
 inventoryController.get('/products', async (req: Request, res: Response) => {
     try {
-        const products = await inventoryService.getAllProducts();
+        const products = await productService.getAllProducts();
         res.json(products);
     } catch (error) {
         console.log(`[error]: ${error}`);
@@ -17,7 +21,7 @@ inventoryController.get('/products', async (req: Request, res: Response) => {
 inventoryController.post('/products', async (req: Request, res: Response) => {
     try {
         const dataProduct = req.body;
-        const createProduct = await inventoryService.createProduct(dataProduct);
+        const createProduct = await productService.createProduct(dataProduct);
         if(createProduct.id){
             res.json({ status: true, producto: createProduct });
         } else {
@@ -31,7 +35,7 @@ inventoryController.post('/products', async (req: Request, res: Response) => {
 
 inventoryController.get('/categories', async (req: Request, res: Response) => {
     try {
-        const category = await inventoryService.getAllCategories();
+        const category = await categorieService.getAllCategories();
         res.json(category);
     } catch (error) {
         console.log(`[error]: ${error}`);

@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '../interfaces/models/product';
 
-class InventoryService {
+class ProductService {
 
     private prisma: PrismaClient = new PrismaClient();
 
@@ -23,13 +23,6 @@ class InventoryService {
         return products;
     };
 
-    public async getAllCategories(){
-        console.log(`[info]: Obteniendo listado de categorias`);
-        const category = await this.prisma.categoria.findMany();
-        console.log(`[info]: Categorias encontradas ${category.length}`);
-        return category;
-    };
-
     public async createProduct(dataProduct: Product){
         console.log(`[info]: Creacion del producto ${dataProduct.nombre}`);
         const [ getCategoryID ] = await this.prisma.categoria.findMany({ select: { id: true }, where: { nombre: dataProduct.categoria.nombre } });
@@ -48,4 +41,4 @@ class InventoryService {
 
 };
 
-export { InventoryService };
+export { ProductService }
