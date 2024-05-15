@@ -46,12 +46,18 @@ inventoryController.delete('/products', async (req: Request, res: Response) => {
 
 inventoryController.get('/categories', async (req: Request, res: Response) => {
     try {
-        const category = await categorieService.getAllCategories();
-        res.json(category);
+        const { categoryName } = req.query;
+        if(categoryName){
+            const categoryByName = await categorieService.getCategory(String(categoryName));
+            res.json(categoryByName);
+        } else {
+            const category = await categorieService.getAllCategories();
+            res.json(category);
+        };
     } catch (error) {
         console.log(`[error]: ${error}`);
         res.json({ status: false });
-    }
+    };
 });
 
 export { inventoryController };

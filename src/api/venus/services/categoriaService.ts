@@ -11,6 +11,13 @@ class CategoriaService {
         return category;
     };
 
+    public async getCategory(inputCategoriName: string){
+        console.log(`[info]: Obteniendo categoria ${inputCategoriName}`);
+        const [ category ] = await this.prisma.categoria.findMany({ where: { nombre: inputCategoriName }});
+        console.log(`[info]: Categoria ${category.nombre} id ${category.id}`);
+        return category;
+    }
+
 };
 
 export { CategoriaService }
