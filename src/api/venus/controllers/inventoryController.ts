@@ -1,12 +1,10 @@
 import express, { Router, Request, Response } from 'express';
 import { ProductService } from '../services/productService';
 import { CategoriaService } from '../services/categoriaService';
-import { ProveedorService } from '../services/proveedorService';
 
 const inventoryController: Router = express.Router();
 const productService: ProductService = new ProductService();
 const categorieService: CategoriaService = new CategoriaService();
-const proveedorService: ProveedorService = new ProveedorService();
 
 inventoryController.get('/products', async (req: Request, res: Response) => {
     try {
@@ -53,6 +51,21 @@ inventoryController.get('/categories', async (req: Request, res: Response) => {
         } else {
             const category = await categorieService.getAllCategories();
             res.json(category);
+        };
+    } catch (error) {
+        console.log(`[error]: ${error}`);
+        res.json({ status: false });
+    };
+});
+
+inventoryController.post('/categories', async (req: Request, res: Response) => {
+    try {
+        const { categoryName } = req.query;
+        if(categoryName){
+            const create = await categorieService.createCategory(String(categoryName));
+            res.json({ message: 'Categoria creada con exito', create });
+        } else {
+            res.json({ message: 'Debe especificar una categoria.' });
         };
     } catch (error) {
         console.log(`[error]: ${error}`);

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Product } from '../interfaces/models/product';
+import { CreateProduct } from '../interfaces/models/product';
 
 class ProductService {
 
@@ -23,9 +23,9 @@ class ProductService {
         return products;
     };
 
-    public async createProduct(dataProduct: Product){
+    public async createProduct(dataProduct: CreateProduct){
         console.log(`[info]: Creacion del producto ${dataProduct.nombre}`);
-        const [ getCategoryID ] = await this.prisma.categoria.findMany({ select: { id: true }, where: { nombre: dataProduct.categoria.nombre } });
+        const [ getCategoryID ] = await this.prisma.categoria.findMany({ select: { id: true }, where: { nombre: dataProduct.categoria } });
         const createProduct = await this.prisma.producto.create({
             data: {
                 nombre: dataProduct.nombre,
