@@ -7,6 +7,15 @@ export interface Product {
     stock:       number;
 }
 
+export interface CreateProduct {
+    id:          number;
+    nombre:      string;
+    descripcion: string;
+    categoria:   string;
+    precio:      number;
+    stock:       number;
+}
+
 export interface CategoriaProducto {
     nombre: string;
 }
