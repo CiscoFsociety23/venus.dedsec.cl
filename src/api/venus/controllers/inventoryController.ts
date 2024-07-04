@@ -31,6 +31,21 @@ inventoryController.post('/products', async (req: Request, res: Response) => {
     }
 });
 
+inventoryController.post('/products/shop', async (req: Request, res: Response) => {
+    try {
+        const { productId, quantity } = req.query;
+        if(productId && quantity){
+            const shop = await productService.shopProduct(Number(productId), Number(quantity));
+            res.json({ message: 'Producto comprado', status: true, shop });
+        } else {
+            res.json({ message: 'Debe especificar el producto y cantidad', status: false });
+        };
+    } catch (error) {
+        console.log(`[error]: ${error}`);
+        res.json({ status: false });
+    };
+});
+
 inventoryController.delete('/products', async (req: Request, res: Response) => {
     try {
         const { productID } = req.query;

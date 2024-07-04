@@ -44,7 +44,31 @@ class ProductService {
         const deleteP = await this.prisma.producto.delete({ where: { id: idProduct } });
         console.log(deleteP);
         return deleteP;
-    }
+    };
+
+    public async getProductById(productId: number){
+        console.log(`[info]: Obteniendo producto con el SKU: ${productId}`);
+        const product = await this.prisma.producto.findUnique({where: { id: productId }});
+        return product;
+    };
+
+    public async shopProduct(productId: number, quantity: number){
+        console.log(`[info]: Realizando compra del producto con el SKU: ${productId}`);
+        const product = await this.getProductById(productId);
+        const getQuantityAfterShop = Number(product?.stock) - quantity;
+        console.log(`[info]: Realizando update en la base de datos`);
+        const update = await this.prisma.producto.update({
+            where: { id: productId },
+            data: {
+                precio: product?.precio,
+                nombre: product?.nombre,
+                descripcion: product?.descripcion,
+                id_categoria: product?.id_categoria,
+                stock: getQuantityAfterShop
+            }
+        });
+        return update;
+    };
 
 };
 
