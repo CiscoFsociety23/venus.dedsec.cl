@@ -1,10 +1,12 @@
 import express, { Router, Request, Response } from 'express';
 import { ProductService } from '../services/productService';
 import { CategoriaService } from '../services/categoriaService';
+import { ProductsMiddleware } from '../middlewares/productsMiddleware';
 
 const inventoryController: Router = express.Router();
 const productService: ProductService = new ProductService();
 const categorieService: CategoriaService = new CategoriaService();
+const productMiddleware: ProductsMiddleware = new ProductsMiddleware();
 
 inventoryController.get('/products', async (req: Request, res: Response) => {
     try {
@@ -16,7 +18,7 @@ inventoryController.get('/products', async (req: Request, res: Response) => {
     }
 });
 
-inventoryController.post('/products', async (req: Request, res: Response) => {
+inventoryController.post('/products', productMiddleware.checkHeader, productMiddleware.checkAdminProfile, async (req: Request, res: Response) => {
     try {
         const dataProduct = req.body;
         const createProduct = await productService.createProduct(dataProduct);
@@ -46,7 +48,7 @@ inventoryController.post('/products/shop', async (req: Request, res: Response) =
     };
 });
 
-inventoryController.delete('/products', async (req: Request, res: Response) => {
+inventoryController.delete('/products', productMiddleware.checkHeader, productMiddleware.checkAdminProfile, async (req: Request, res: Response) => {
     try {
         const { productID } = req.query;
         const deleteProduct = await productService.deleteProduct(Number(productID));
@@ -57,7 +59,7 @@ inventoryController.delete('/products', async (req: Request, res: Response) => {
     }
 });
 
-inventoryController.get('/categories', async (req: Request, res: Response) => {
+inventoryController.get('/categories', productMiddleware.checkHeader, productMiddleware.checkAdminProfile, async (req: Request, res: Response) => {
     try {
         const { categoryName } = req.query;
         if(categoryName){
@@ -73,7 +75,7 @@ inventoryController.get('/categories', async (req: Request, res: Response) => {
     };
 });
 
-inventoryController.post('/categories', async (req: Request, res: Response) => {
+inventoryController.post('/categories', productMiddleware.checkHeader, productMiddleware.checkAdminProfile, async (req: Request, res: Response) => {
     try {
         const { categoryName } = req.query;
         if(categoryName){
